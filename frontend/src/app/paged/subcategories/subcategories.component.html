@@ -1,0 +1,17 @@
+<div class="page-container">
+  <div class="page-card">
+    <h2>Choose Subcategory</h2>
+    <p class="subtitle">Select the lesson topic</p>
+
+    <div *ngIf="loading()" class="loader">Loading sub-categories...</div>
+    <div *ngIf="error()" class="alert alert-error">{{ error() }}</div>
+
+    <div class="grid" *ngIf="!loading() && subcategories().length">
+      <button class="sub-card" *ngFor="let s of subcategories()" (click)="choose(s)">
+        <div class="sub-name">{{ s.name }}</div>
+      </button>
+    </div>
+
+    <div *ngIf="!loading() && !subcategories().length" class="empty">No sub-categories found.</div>
+  </div>
+</div>

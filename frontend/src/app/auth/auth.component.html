@@ -1,0 +1,153 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <!-- Header -->
+    <div class="auth-header">
+      <h1>{{ isLogin() ? 'Welcome Back' : 'Create Account' }}</h1>
+      <p class="subtitle">{{ isLogin() ? 'Sign in to continue learning' : 'Join our learning platform' }}</p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="auth-tabs">
+      <button 
+        class="tab" 
+        [class.active]="isLogin()"
+        (click)="toggleMode()"
+      >
+        Login
+      </button>
+      <button 
+        class="tab" 
+        [class.active]="!isLogin()"
+        (click)="toggleMode()"
+      >
+        Register
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div *ngIf="error()" class="alert alert-error">
+      <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      <span>{{ error() }}</span>
+    </div>
+
+    <div *ngIf="success()" class="alert alert-success">
+      <svg class="alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <polyline points="20 6 9 17 4 12"></polyline>
+      </svg>
+      <span>{{ success() }}</span>
+    </div>
+
+    <!-- Login Form -->
+    <form *ngIf="isLogin()" (ngSubmit)="submitLogin()" class="auth-form">
+      <div class="form-group">
+        <label for="login-name">Name</label>
+        <input
+          id="login-name"
+          type="text"
+          [(ngModel)]="loginName"
+          name="loginName"
+          placeholder="Enter your name"
+          [disabled]="isLoading()"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="login-id">ID Number</label>
+        <input
+          id="login-id"
+          type="text"
+          [(ngModel)]="loginIdNumber"
+          name="loginIdNumber"
+          placeholder="9 digit ID number"
+          maxlength="9"
+          pattern="\d*"
+          [disabled]="isLoading()"
+          required
+        />
+      </div>
+
+      <button 
+        type="submit" 
+        class="btn btn-primary"
+        [disabled]="isLoading()"
+      >
+        <span *ngIf="!isLoading()">Sign In</span>
+        <span *ngIf="isLoading()" class="loading">
+          <span class="spinner"></span>Signing in...
+        </span>
+      </button>
+    </form>
+
+    <!-- Register Form -->
+    <form *ngIf="!isLogin()" (ngSubmit)="submitRegister()" class="auth-form">
+      <div class="form-group">
+        <label for="register-name">Name</label>
+        <input
+          id="register-name"
+          type="text"
+          [(ngModel)]="registerName"
+          name="registerName"
+          placeholder="Enter your full name"
+          [disabled]="isLoading()"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="register-id">ID Number</label>
+        <input
+          id="register-id"
+          type="text"
+          [(ngModel)]="registerIdNumber"
+          name="registerIdNumber"
+          placeholder="9 digit ID number"
+          maxlength="9"
+          pattern="\d*"
+          [disabled]="isLoading()"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="register-phone">Phone Number (Optional)</label>
+        <input
+          id="register-phone"
+          type="tel"
+          [(ngModel)]="registerPhone"
+          name="registerPhone"
+          placeholder="Enter your phone number"
+          [disabled]="isLoading()"
+        />
+      </div>
+
+      <button 
+        type="submit" 
+        class="btn btn-primary"
+        [disabled]="isLoading()"
+      >
+        <span *ngIf="!isLoading()">Create Account</span>
+        <span *ngIf="isLoading()" class="loading">
+          <span class="spinner"></span>Creating account...
+        </span>
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <div class="auth-footer">
+      <p>
+        {{ isLogin() ? "Don't have an account?" : 'Already have an account?' }}
+        <a href="javascript:void(0)" (click)="toggleMode()">
+          {{ isLogin() ? 'Sign up' : 'Sign in' }}
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Decorative background -->
+  <div class="auth-bg-decoration"></div>
+</div>
