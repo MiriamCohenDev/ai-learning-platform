@@ -1,0 +1,17 @@
+<div class="page-container">
+  <div class="page-card">
+    <h2>Choose Category</h2>
+    <p class="subtitle">Select a category to see available lessons</p>
+
+    <div *ngIf="loading()" class="loader">Loading categories...</div>
+    <div *ngIf="error()" class="alert alert-error">{{ error() }}</div>
+
+    <div class="grid" *ngIf="!loading() && categories().length">
+      <button class="cat-card" *ngFor="let c of categories()" (click)="openCategory(c._id)">
+        <div class="cat-name">{{ c.name }}</div>
+      </button>
+    </div>
+
+    <div *ngIf="!loading() && !categories().length" class="empty">No categories found.</div>
+  </div>
+</div>

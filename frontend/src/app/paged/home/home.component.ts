@@ -19,4 +19,8 @@ export class HomeComponent {
     }
     this.router.navigate(['/auth']);
   }
+
+  navigateToCategories() {
+    this.router.navigate(['/categories']);
+  }
 }

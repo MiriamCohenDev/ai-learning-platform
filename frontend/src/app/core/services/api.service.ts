@@ -42,4 +42,30 @@ export class ApiService {
 
     return response.json();
   }
+
+  // Fetch all categories
+  async getCategories(): Promise<Array<{ _id: string; name: string }>> {
+    const res = await fetch(`${this.baseUrl}/categories`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ message: 'Failed to load categories' }));
+      throw new Error(err.message || 'Failed to load categories');
+    }
+    return res.json();
+  }
+
+  // Fetch sub-categories for a category id
+  async getSubCategories(categoryId: string): Promise<Array<{ _id: string; name: string }>> {
+    const res = await fetch(`${this.baseUrl}/categories/${categoryId}/sub-categories`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ message: 'Failed to load sub-categories' }));
+      throw new Error(err.message || 'Failed to load sub-categories');
+    }
+    return res.json();
+  }
 }

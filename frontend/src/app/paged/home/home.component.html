@@ -21,15 +21,18 @@
         </div>
         <h2>Welcome!</h2>
         <p>You have successfully logged in to the AI Learning Platform</p>
+        <div style="margin-top:18px; display:flex; gap:12px; justify-content:center;">
+          <button class="logout-btn" (click)="logout()">Sign Out</button>
+        </div>
       </div>
 
       <div class="features-grid">
-        <div class="feature-card">
+        <div class="feature-card" (click)="navigateToCategories()" style="cursor:pointer">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
             <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
           </svg>
-          <h3>Learn</h3>
-          <p>Access comprehensive learning materials</p>
+          <h3>Choose Lesson</h3>
+          <p>Browse categories and choose a lesson</p>
         </div>
 
         <div class="feature-card">
