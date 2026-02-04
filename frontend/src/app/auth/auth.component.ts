@@ -1,0 +1,103 @@
+import { Component, signal, inject, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { ApiService } from '../core/services/api.service';
+
+@Component({
+  selector: 'app-auth',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './auth.component.html',
+  styleUrls: ['./auth.component.scss'],
+})
+export class AuthComponent {
+  isLogin = signal(true);
+  isLoading = signal(false);
+  error = signal<string | null>(null);
+  success = signal<string | null>(null);
+
+  // Login fields
+  loginName = signal('');
+  loginIdNumber = signal('');
+
+  // Register fields
+  registerName = signal('');
+  registerIdNumber = signal('');
+  registerPhone = signal('');
+
+  private api = inject(ApiService);
+  private router = inject(Router);
+  private platformId = inject(PLATFORM_ID);
+
+  toggleMode() {
+    this.isLogin.set(!this.isLogin());
+    this.error.set(null);
+    this.success.set(null);
+  }
+
+  async submitLogin() {
+    this.error.set(null);
+    this.success.set(null);
+
+    if (!this.loginName() || !this.loginIdNumber()) {
+      this.error.set('Please fill in all fields');
+      return;
+    }
+
+    this.isLoading.set(true);
+    try {
+      const response = await this.api.login({
+        name: this.loginName(),
+        idNumber: this.loginIdNumber(),
+      });
+
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem('access_token', response.access_token);
+      }
+
+      this.success.set('Login successful! Redirecting...');
+      setTimeout(() => this.router.navigate(['/']), 1000);
+    } catch (err: any) {
+      this.error.set(err.message || 'Login failed. Please try again.');
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
+
+  async submitRegister() {
+    this.error.set(null);
+    this.success.set(null);
+
+    if (!this.registerName() || !this.registerIdNumber()) {
+      this.error.set('Name and ID Number are required');
+      return;
+    }
+
+    // Validate Israeli ID format (9 digits)
+    if (!/^\d{9}$/.test(this.registerIdNumber())) {
+      this.error.set('ID Number must be 9 digits');
+      return;
+    }
+
+    this.isLoading.set(true);
+    try {
+      const response = await this.api.register({
+        name: this.registerName(),
+        idNumber: this.registerIdNumber(),
+        phone: this.registerPhone() || undefined,
+      });
+
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem('access_token', response.access_token);
+      }
+
+      this.success.set('Registration successful! Redirecting...');
+      setTimeout(() => this.router.navigate(['/']), 1000);
+    } catch (err: any) {
+      this.error.set(err.message || 'Registration failed. Please try again.');
+    } finally {
+      this.isLoading.set(false);
+    }
+  }
+}
