@@ -68,4 +68,31 @@ export class ApiService {
     }
     return res.json();
   }
+
+  // Submit a prompt to get a lesson
+  async submitPrompt(data: {
+    categoryId: string;
+    subCategoryId: string;
+    prompt: string;
+  }): Promise<{ lesson: string }> {
+    const res = await fetch(`${this.baseUrl}/prompts`, {
+      method: 'POST',
+      headers: this.getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ message: 'Failed to generate lesson' }));
+      throw new Error(err.message || 'Failed to generate lesson');
+    }
+    return res.json();
+  }
+
+  private getAuthHeaders(): HeadersInit {
+  const token = localStorage.getItem('access_token');
+  return {
+    'Content-Type': 'application/json',
+    ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+  };
+}
+
 }

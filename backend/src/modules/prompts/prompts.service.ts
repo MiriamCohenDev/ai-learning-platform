@@ -6,7 +6,7 @@ import { CreatePromptDto } from './dtos/create-prompt.dto';
 import { OpenAI } from 'openai';
 import { Category, CategoryDocument } from '../categories/schemas/category.schema';
 import { SubCategory, SubCategoryDocument } from '../categories/schemas/sub-category.schema';
-
+import { createAiProvider } from '../../ai/ai.factory';
 @Injectable()
 export class PromptsService {
   constructor(
@@ -46,20 +46,18 @@ export class PromptsService {
     `;
 
 
+    let aiProvider = createAiProvider();
 
-    const completion = await this.openai.chat.completions.create({
-      model: 'gpt-4',
-      messages: [{ role: 'user', content: aiPrompt }],
-    });
-
-    const aiResponse = completion.choices[0].message?.content;
+    const aiResponse = await aiProvider.generateLesson(aiPrompt);
 
     if (!aiResponse) {
-        throw new BadRequestException('No response received from AI.');
+      throw new BadRequestException('No response received from AI.');
     }
 
-    if (aiResponse.toLowerCase().includes('out of scope')) {
-    throw new BadRequestException('The user prompt is out of scope for the selected category/sub-category.');
+    if (aiResponse.trim().toLowerCase() === 'out of scope') {
+      throw new BadRequestException(
+        'The user prompt is out of scope for the selected category/sub-category.'
+      );
     }
 
     const created = await this.promptModel.create({

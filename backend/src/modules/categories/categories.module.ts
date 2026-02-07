@@ -15,6 +15,7 @@ import { CategoriesSeedService } from '../../database/seeds/categories.seed.serv
   ],
   controllers: [CategoriesController],
   providers: [CategoriesService, CategoriesSeedService],
+  exports: [MongooseModule],
 })
 export class CategoriesModule {}
 []
