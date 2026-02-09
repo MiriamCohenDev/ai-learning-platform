@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards, Req, Get, UnauthorizedException,} from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Req, Get, UnauthorizedException, Param,} from '@nestjs/common';
 import { PromptsService } from './prompts.service';
 import { CreatePromptDto } from './dtos/create-prompt.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -28,5 +28,15 @@ export class PromptsController {
     }
     const prompts = await this.promptsService.getUserPrompts(userId);
     return prompts;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('history/:id')
+  async getUserPromptById(@Param('id') id: string, @Req() req: Request) {
+    const userId = req.user?.userId;
+    if (!userId) {
+      throw new UnauthorizedException('User not found');
+    }
+    return this.promptsService.getUserPromptById(userId, id);
   }
 }

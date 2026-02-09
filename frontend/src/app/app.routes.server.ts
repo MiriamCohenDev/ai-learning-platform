@@ -9,6 +9,14 @@ export const serverRoutes: ServerRoute[] = [
     path: 'prompt',
     renderMode: 0
   },
+    {
+    path: 'history',
+    renderMode: 0
+  },
+  {
+    path: 'history/:id',
+    renderMode: 0
+  },
   {
     path: '**',
     renderMode: RenderMode.Prerender

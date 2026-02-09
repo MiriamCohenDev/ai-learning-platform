@@ -71,7 +71,22 @@ export class PromptsService {
     return created;
   }
 
+
   async getUserPrompts(userId: string) {
-    return this.promptModel.find({ userId }).sort({ createdAt: -1 }).exec();
+    return this.promptModel
+      .find({ userId })
+      .sort({ createdAt: -1 })
+      .populate('categoryId', 'name')      
+      .populate('subCategoryId', 'name')    
+      .exec();
   }
+
+  async getUserPromptById(userId: string, promptId: string) {
+    return this.promptModel
+      .findOne({ userId, _id: promptId })
+      .populate('categoryId')
+      .populate('subCategoryId')
+      .exec();
+  }
+
 }

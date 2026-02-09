@@ -1,0 +1,30 @@
+<div class="main-content" ngSkipHydration>
+  <h2>Lesson History</h2>
+
+  <ng-container *ngIf="lessons.length > 0; else noHistory">
+    <div class="lessons-container">
+      <div
+        class="lesson-card"
+        *ngFor="let lesson of lessons"
+        (click)="openLesson(lesson._id)"
+      >
+        <div class="lesson-info">
+          <p>
+            <strong>Category:</strong> {{ lesson.categoryId.name }} |
+            <strong>Sub:</strong> {{ lesson.subCategoryId.name }}
+          </p>
+          <h3 class="lesson-title">{{ lesson.prompt | slice:0:40 }}...</h3>
+          <p class="lesson-date">{{ lesson.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+          <p class="lesson-preview">{{ lesson.response | slice:0:80 }}...</p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #noHistory>
+    <div class="welcome-card">
+      <h3>No lessons yet</h3>
+      <p>You have not created any lessons.</p>
+    </div>
+  </ng-template>
+</div>

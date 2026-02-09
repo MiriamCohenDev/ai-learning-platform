@@ -1,0 +1,36 @@
+<div class="admin-container">
+  <h1>Admin Dashboard</h1>
+
+  <div class="admin-actions">
+    <button class="btn btn-primary" (click)="navigateToLessons()">Create Lesson</button>
+    <button class="btn btn-secondary" (click)="navigateToHistory()">View History</button>
+  </div>
+
+  <h2>Users</h2>
+
+  <div *ngIf="loading()" class="loader">Loading users...</div>
+  <div *ngIf="error()" class="alert alert-error">{{ error() }}</div>
+
+  <table *ngIf="!loading() && users().length" class="user-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>ID Number</th>
+        <th>Phone</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users()">
+        <td>{{ user.name }}</td>
+        <td>{{ user.idNumber }}</td>
+        <td>{{ user.phone || '-' }}</td>
+        <td>
+          <button class="btn btn-primary" (click)="viewUser(user.id)">View History</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="!loading() && !users().length" class="empty">No users found.</div>
+</div>

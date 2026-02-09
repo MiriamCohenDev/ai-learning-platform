@@ -10,5 +10,6 @@ import { CategoriesModule } from '../categories/categories.module';
   CategoriesModule],
   providers: [PromptsService],
   controllers: [PromptsController],
+  exports: [PromptsService],
 })
 export class PromptsModule {}

@@ -17,9 +17,5 @@ export class UsersController {
     return { message: 'User registered successfully', user, ...token };
   }
 
-  @Get()
-  async getAllUsers() {
-    const users = await this.usersService.findAll();
-    return users;
-  }
+
 }

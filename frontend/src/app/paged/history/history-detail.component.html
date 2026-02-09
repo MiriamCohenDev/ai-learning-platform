@@ -1,0 +1,21 @@
+<div class="main-content" *ngIf="isLoaded; else loading">
+  <button class="back-btn" (click)="back()">← Back</button>
+
+  <div class="lesson-card" *ngIf="lesson">
+    <h2 class="lesson-title">{{ lesson.prompt }}</h2>
+
+    <div class="lesson-meta">
+      <span><strong>Category:</strong> {{ lesson.categoryId.name }}</span>
+      <span><strong>SubCategory:</strong> {{ lesson.subCategoryId.name }}</span>
+      <span><strong>Created:</strong> {{ lesson.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+    </div>
+
+    <div class="lesson-response">
+      <pre>{{ lesson.response }}</pre>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <p class="loading-text">Loading lesson...</p>
+</ng-template>
