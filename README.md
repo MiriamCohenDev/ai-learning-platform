@@ -20,12 +20,12 @@ cd ai-learning-platform
 ### 2. Configure .env files
 There are two .env.example files that need to be updated:
 
-## 2.1 Root of the project
+#### 2.1 Root of the project
 Update the MongoDB root credentials:
 
 - MONGO_INITDB_ROOT_USERNAME=your_username
 - MONGO_INITDB_ROOT_PASSWORD=your_password
-## 2.2 Backend directory
+# 2.2 Backend directory
 Update the backend configuration:
 
 # Backend server
