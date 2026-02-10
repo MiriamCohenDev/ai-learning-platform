@@ -1,6 +1,7 @@
 import { Component, PLATFORM_ID, inject, OnInit } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -10,8 +11,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  private router = inject(Router);
+  public router = inject(Router);
   private platformId = inject(PLATFORM_ID);
+  public authService = inject(AuthService);
+  
 
   logout() {
     if (isPlatformBrowser(this.platformId)) {

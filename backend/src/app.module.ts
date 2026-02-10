@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './modules/auth/auth.module';
 import { CategoriesModule } from './modules/categories/categories.module';
 import { PromptsModule } from './modules/prompts/prompts.module';
+import { HealthController } from './health/health.controller';
 
 
 @Module({
@@ -22,5 +23,6 @@ import { PromptsModule } from './modules/prompts/prompts.module';
     CategoriesModule,
     PromptsModule
   ],
+  controllers: [HealthController],
 })
 export class AppModule {}

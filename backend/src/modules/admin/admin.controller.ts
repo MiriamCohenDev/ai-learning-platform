@@ -17,6 +17,12 @@ export class AdminController {
   async getUserHistory(@Param('id') userId: string) {
     return await this.promptsService.getUserPrompts(userId); 
   }
+
+  @Roles('admin')
+  @Get('users/:id/prompt/:promptId')
+  async getUserPrompt(@Param('id') userId: string, @Param('promptId') promptId: string) {
+    return await this.promptsService.getUserPromptById(userId, promptId); 
+  }
   
   @Roles('admin')
   @Get('users')

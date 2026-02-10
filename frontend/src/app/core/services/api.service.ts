@@ -1,15 +1,16 @@
 import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { RegisterRequest, LoginRequest, AuthResponse } from '../../models/auth.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private baseUrl = 'http://localhost:3000';
+  private baseUrl = environment.apiUrl;
   private platformId = inject(PLATFORM_ID);
 
   constructor() {
     if (isPlatformBrowser(this.platformId)) {
-      this.baseUrl = (window as any).__env?.API_URL || 'http://localhost:3000';
+      this.baseUrl = environment.apiUrl;
     }
   }
 
@@ -119,7 +120,7 @@ export class ApiService {
 
   // Fetch all users (admin)
 async getAllUsers(): Promise<Array<{ id: string; name: string; idNumber: string; phone?: string }>> {
-  const res = await fetch(`${this.baseUrl}/users`, {
+  const res = await fetch(`${this.baseUrl}/admin/users`, {
     method: 'GET',
     headers: this.getAuthHeaders(),
   });
@@ -133,7 +134,7 @@ async getAllUsers(): Promise<Array<{ id: string; name: string; idNumber: string;
 
 // Fetch user history by ID (admin)
 async getUserHistory(userId: string): Promise<any[]> {
-  const res = await fetch(`${this.baseUrl}/users/${userId}/history`, {
+  const res = await fetch(`${this.baseUrl}/admin/users/${userId}/history`, {
     method: 'GET',
     headers: this.getAuthHeaders(),
   });
@@ -145,7 +146,18 @@ async getUserHistory(userId: string): Promise<any[]> {
   return res.json();
 }
 
+async getUserPrompt(userId: string, promptId: string): Promise<any> {
+  const res = await fetch(`${this.baseUrl}/admin/users/${userId}/prompt/${promptId}`, {
+    method: 'GET',
+    headers: this.getAuthHeaders(),
+  });
 
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({ message: 'Failed to load lesson' }));
+    throw new Error(err.message || 'Failed to load lesson');
+  }
+  return res.json();
+}
 
   private getAuthHeaders(): HeadersInit {
     const token = localStorage.getItem('access_token');

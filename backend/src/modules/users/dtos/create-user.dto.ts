@@ -1,4 +1,3 @@
-// backend/src/modules/users/dtos/create-user.dto.ts
 import { IsNotEmpty, IsString, IsOptional, Matches } from 'class-validator';
 import { IsIsraeliId } from '../../../common/validators/israeli-id.validator';
 
