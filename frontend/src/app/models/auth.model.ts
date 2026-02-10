@@ -9,14 +9,17 @@ export interface LoginRequest {
   idNumber: string;
 }
 
+
 export interface AuthResponse {
   access_token: string;
-  user?: {
+  user: {
     id: string;
     name: string;
     idNumber: string;
+    role: 'user' | 'admin';
   };
 }
+
 
 export interface AuthError {
   message: string;

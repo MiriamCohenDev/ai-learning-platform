@@ -31,6 +31,10 @@ export class SubcategoriesComponent implements OnInit {
     try {
       const list = await this.api.getSubCategories(id);
       this.subcategories.set(list || []);
+      // Store category ID for later use
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem('selected_category_id', id);
+      }
     } catch (err: any) {
       this.error.set(err?.message || 'Failed to load sub-categories');
     } finally {
@@ -39,10 +43,10 @@ export class SubcategoriesComponent implements OnInit {
   }
 
   choose(sub: { _id: string; name: string }) {
-    // store selection and navigate to home (or to lesson flow)
+    // store selection and navigate to prompt
     if (isPlatformBrowser(this.platformId)) {
       localStorage.setItem('selected_subcategory', JSON.stringify(sub));
     }
-    this.router.navigate(['/']);
+    this.router.navigate(['/prompt']);
   }
 }
