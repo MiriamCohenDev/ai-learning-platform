@@ -15,7 +15,10 @@ export class HomeComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);
   public authService = inject(AuthService);
   
-
+/**
+   * Logs out the user by removing the JWT from localStorage.
+   * Only runs on the browser since localStorage is not available on the server.
+   */
   logout() {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('access_token');
@@ -23,6 +26,10 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/auth']);
   }
 
+    /**
+   * On init, ensures that unauthenticated users are redirected to /auth.
+   * This is a defensive check for server-side rendering or page reloads.
+   */
   ngOnInit() {
     // Defensive check: if no token, redirect to auth
     if (isPlatformBrowser(this.platformId)) {
@@ -31,10 +38,12 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  /** Navigate to the categories page. */
   navigateToCategories() {
     this.router.navigate(['/categories']);
   }
 
+   /** Navigate to the user's lesson history page. */
   navigateToHistory() {
     this.router.navigate(['/history']);
   }

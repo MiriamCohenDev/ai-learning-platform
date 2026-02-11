@@ -3,6 +3,21 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
 
+/**
+ * Component for displaying sub-categories of a selected category.
+ * 
+ * Responsibilities:
+ * - Fetch the list of sub-categories for a given category ID from the backend.
+ * - Handle loading state and errors during the API call.
+ * - Store the selected category ID and sub-category in localStorage for later use
+ *   (e.g., when submitting a prompt in the PromptComponent).
+ * - Navigate to the PromptComponent after a sub-category is selected.
+ * 
+ * Notes:
+ * - The component retrieves the category ID from the route parameters.
+ * - Uses `isPlatformBrowser` to ensure localStorage access only happens in the browser,
+ *   preventing issues during server-side rendering (Angular Universal).
+ */
 @Component({
   selector: 'app-subcategories',
   standalone: true,
@@ -42,6 +57,14 @@ export class SubcategoriesComponent implements OnInit {
     }
   }
 
+    /**
+   * Handle sub-category selection
+   * 
+   * Stores the selected sub-category in localStorage (for later retrieval in PromptComponent)
+   * and navigates to the prompt submission page.
+   * 
+   * @param sub The selected sub-category object
+   */
   choose(sub: { _id: string; name: string }) {
     // store selection and navigate to prompt
     if (isPlatformBrowser(this.platformId)) {

@@ -3,6 +3,10 @@ import { Document, Types } from 'mongoose';
 
 export type PromptDocument = Prompt & Document;
 
+/**
+ * Mongoose schema for Prompt collection.
+ * Stores user prompts, related category/sub-category, and AI-generated response.
+ */
 @Schema({ timestamps: true })
 export class Prompt {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })

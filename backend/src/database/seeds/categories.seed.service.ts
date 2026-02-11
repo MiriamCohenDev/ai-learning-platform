@@ -4,6 +4,16 @@ import { Model } from 'mongoose';
 import { Category } from '../../modules/categories/schemas/category.schema';
 import { SubCategory } from '../../modules/categories/schemas/sub-category.schema';
 
+/**
+ * CategoriesSeedService is responsible for populating the database with
+ * initial categories and sub-categories if none exist.
+ * 
+ * Lifecycle:
+ * - Implements OnModuleInit, so it runs automatically when the NestJS module
+ *   is initialized.
+ * - Checks if any categories already exist; if so, it does nothing.
+ * - Otherwise, it creates a predefined set of main categories and sub-categories.
+ */
 @Injectable()
 export class CategoriesSeedService implements OnModuleInit {
   constructor(
@@ -14,13 +24,19 @@ export class CategoriesSeedService implements OnModuleInit {
     private readonly subCategoryModel: Model<SubCategory>,
   ) {}
 
+  /**
+   * Called automatically by NestJS on module initialization.
+   * Seeds categories and sub-categories if the database is empty.
+   */
   async onModuleInit() {
     const categoriesCount = await this.categoryModel.countDocuments();
 
     if (categoriesCount > 0) {
+      // Database already has categories, skip seeding
       return;
     }
 
+    // Create main categories
     const programming = await this.categoryModel.create({ name: 'Programming' });
     const databases = await this.categoryModel.create({ name: 'Databases' });
     const design = await this.categoryModel.create({ name: 'Design' });
@@ -32,6 +48,7 @@ export class CategoriesSeedService implements OnModuleInit {
     const music = await this.categoryModel.create({ name: 'Music' });
     const personalDevelopment = await this.categoryModel.create({ name: 'Personal Development' });
 
+    // Create sub-categories and associate them with their parent category
     await this.subCategoryModel.insertMany([
       // Programming
       { name: 'JavaScript', category_id: programming._id },

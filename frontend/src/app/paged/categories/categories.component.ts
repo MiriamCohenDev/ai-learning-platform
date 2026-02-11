@@ -31,6 +31,10 @@ export class CategoriesComponent implements OnInit {
     }
   }
 
+   /**
+   * Navigate to the sub-categories page for the selected category.
+   * @param categoryId - the ID of the category to open
+   */
   openCategory(categoryId: string) {
     this.router.navigate(['/categories', categoryId, 'sub']);
   }

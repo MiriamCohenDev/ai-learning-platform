@@ -1,6 +1,10 @@
 import { IsNotEmpty, IsString, IsOptional, Matches } from 'class-validator';
 import { IsIsraeliId } from '../../../common/validators/israeli-id.validator';
 
+/**
+ * DTO for creating a new user.
+ * Validates required fields and optional phone number format.
+ */
 export class CreateUserDto {
   @IsString()
   @IsNotEmpty()

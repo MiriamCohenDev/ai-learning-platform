@@ -5,6 +5,18 @@ import { ApiService } from '../../core/services/api.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 
+/**
+ * Component for displaying lesson history.
+ * 
+ * Behavior:
+ * - Regular users see only their own lesson history.
+ * - Admin users can view the history of other users by passing a `userId` via query parameters.
+ *   If a non-admin tries to view another user's history, access is blocked.
+ * 
+ * This component fetches the lessons from the backend using ApiService, 
+ * and handles navigation to individual lessons.
+ */
+
 @Component({
   standalone: true,
   selector: 'app-history',
@@ -23,10 +35,11 @@ export class HistoryComponent implements OnInit {
   private viewingUserId?: string;
 
   async ngOnInit() {
+    // Check if a userId is provided in query params (admin viewing another user)
     const userIdFromQuery = this.route.snapshot.queryParamMap.get('userId');
 
     if (userIdFromQuery) {
-      
+      // Only allow admins to view another user's history
       if (!this.authService.isAdmin()) {
         console.error('Not authorized to view other users history');
         return;
@@ -34,6 +47,7 @@ export class HistoryComponent implements OnInit {
       this.viewingUserId = userIdFromQuery;
       this.lessons = await this.api.getUserHistory(userIdFromQuery);
     } else {
+      // Regular user: fetch own history
       this.lessons = await this.api.getHistory();
     }
     
@@ -41,6 +55,12 @@ export class HistoryComponent implements OnInit {
     
   }
 
+   /**
+   * Navigate to a specific lesson.
+   * - If admin viewing another user, preserves the userId query parameter.
+   * - Otherwise, navigates normally to the lesson detail.
+   * @param id The ID of the lesson to open
+   */
   openLesson(id: string) {
     if (this.viewingUserId) {
       this.router.navigate(['/history', id], {

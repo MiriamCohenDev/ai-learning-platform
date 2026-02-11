@@ -4,10 +4,19 @@ import { CreatePromptDto } from './dtos/create-prompt.dto';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import type { Request } from 'express';
 
+/**
+ * Controller for prompts endpoints.
+ * Protected by JWT authentication.
+ */
 @Controller('prompts')
 export class PromptsController {
   constructor(private promptsService: PromptsService) {}
 
+    /**
+   * POST /prompts
+   * Creates a new prompt for the authenticated user.
+   * Returns AI-generated lesson and prompt ID.
+   */
   @UseGuards(JwtAuthGuard)
   @Post()
   async createPrompt(@Req() req: Request, @Body() dto: CreatePromptDto) {
@@ -19,6 +28,10 @@ export class PromptsController {
     return { lesson: prompt.response, id: prompt._id };
   }
 
+    /**
+   * GET /prompts/history
+   * Returns all prompts of the authenticated user.
+   */
   @UseGuards(JwtAuthGuard)
   @Get('history')
   async getUserPrompts(@Req() req: Request) {
@@ -29,6 +42,11 @@ export class PromptsController {
     const prompts = await this.promptsService.getUserPrompts(userId);
     return prompts;
   }
+
+    /**
+   * GET /prompts/history/:id
+   * Returns a specific prompt by ID for the authenticated user.
+   */
 
   @UseGuards(JwtAuthGuard)
   @Get('history/:id')

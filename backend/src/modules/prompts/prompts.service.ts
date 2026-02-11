@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Prompt, PromptDocument } from './schemas/prompt.schema';
@@ -7,6 +7,12 @@ import { OpenAI } from 'openai';
 import { Category, CategoryDocument } from '../categories/schemas/category.schema';
 import { SubCategory, SubCategoryDocument } from '../categories/schemas/sub-category.schema';
 import { createAiProvider } from '../../ai/ai.factory';
+
+/**
+ * Service for managing prompts.
+ * Handles creation of new prompts, AI lesson generation, 
+ * and retrieval of prompts for users.
+ */
 @Injectable()
 export class PromptsService {
   constructor(
@@ -18,6 +24,27 @@ export class PromptsService {
   private openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
+
+  /**
+   * Creates a new prompt for a user and generates an AI lesson.
+   *
+   * Steps:
+   * 1. Validates prompt length (max 10000 characters).
+   * 2. Checks that both the category and sub-category exist.
+   * 3. Ensures that the selected sub-category belongs to the chosen category.
+   * 4. Constructs a detailed AI instruction string based on category, sub-category, and user prompt.
+   * 5. Calls AI provider to generate lesson.
+   * 6. Checks that AI response is not empty and not "out of scope".
+   * 7. Saves the prompt and AI response to the database.
+   *
+   * Throws:
+   * - BadRequestException for invalid input or out-of-scope prompt.
+   * - InternalServerErrorException if AI service fails.
+   *
+   * @param userId - ID of the authenticated user creating the prompt
+   * @param dto - Data transfer object containing categoryId, subCategoryId, and prompt text
+   * @returns The created Prompt document including AI response
+   */
 
   async createPrompt(userId: string, dto: CreatePromptDto) {
     if (dto.prompt.length > 10000) {
@@ -48,10 +75,15 @@ export class PromptsService {
 
     let aiProvider = createAiProvider();
 
-    const aiResponse = await aiProvider.generateLesson(aiPrompt);
-
+    let aiResponse;
+    try {
+      aiResponse = await aiProvider.generateLesson(aiPrompt);
+    } catch (err) {
+      throw new InternalServerErrorException('AI service failed');
+    }
+  
     if (!aiResponse) {
-      throw new BadRequestException('No response received from AI.');
+      throw new InternalServerErrorException('AI returned empty response');
     }
 
     if (aiResponse.trim().toLowerCase() === 'out of scope') {
@@ -71,7 +103,10 @@ export class PromptsService {
     return created;
   }
 
-
+    /**
+   * Retrieves all prompts for a given user.
+   * Populates category and sub-category names.
+   */
   async getUserPrompts(userId: string) {
     return this.promptModel
       .find({ userId })
@@ -81,6 +116,10 @@ export class PromptsService {
       .exec();
   }
 
+    /**
+   * Retrieves a specific prompt by ID for a given user.
+   * Populates category and sub-category details.
+   */
   async getUserPromptById(userId: string, promptId: string) {
     return this.promptModel
       .findOne({ userId, _id: promptId })

@@ -14,10 +14,17 @@ export class CategoriesService {
     private readonly subCategoryModel: Model<SubCategory>,
   ) {}
 
+    /**
+   * Returns all main categories.
+   */
   async getAllCategories() {
     return this.categoryModel.find().lean();
   }
 
+    /**
+   * Returns all sub-categories for a specific category.
+   * Converts string categoryId to ObjectId before querying.
+   */
   async getSubCategoriesByCategoryId(categoryId: string) {
     return this.subCategoryModel.find({
       category_id: new Types.ObjectId(categoryId),
