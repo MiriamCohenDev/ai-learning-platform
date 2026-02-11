@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { NavigationService } from '../../core/services/navigation.service';
 
 /**
  * Component for displaying all users in the admin panel.
@@ -29,6 +30,8 @@ export class AdminUsersComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   selectedUserId: string | null = null;
 
+  private navigation = inject(NavigationService);
+
   users: any[] = [];
 
   async ngOnInit() {
@@ -48,4 +51,12 @@ export class AdminUsersComponent implements OnInit {
   openHistory(userId: string) {
     this.router.navigate(['/history'], { queryParams: { userId } });
   }
+
+    /**
+   * Navigate back to the previous page.
+   */
+    goBack() {
+      this.navigation.goBack();
+    }
+
 }

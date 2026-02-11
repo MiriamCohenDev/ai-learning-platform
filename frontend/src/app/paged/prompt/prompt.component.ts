@@ -1,13 +1,11 @@
-import { Component, PLATFORM_ID, inject, signal } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, inject, signal } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/services/api.service';
 import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { NavigationService } from '../../core/services/navigation.service';
 
-interface SelectedSubcategory {
-  _id: string;
-  name: string;
-}
 
 /**
  * Component for submitting user prompts and displaying AI-generated lessons.
@@ -20,39 +18,57 @@ interface SelectedSubcategory {
   templateUrl: './prompt.component.html',
   styleUrls: ['./prompt.component.scss'],
 })
-export class PromptComponent {
+export class PromptComponent implements OnInit{
   private api = inject(ApiService);
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
+  private route = inject(ActivatedRoute);
+  private navigation = inject(NavigationService);
+
 
   promptText = signal<string>('');
   loading = signal(false);
   error = signal<string | null>(null);
   success = signal<string | null>(null);
-  selectedSubcategory = signal<SelectedSubcategory | null>(null);
-  categoryId = signal<string | null>(null);
   showResult = signal(false);
+  categoryId = signal<string | null>(null);
+  selectedSubcategory = signal<string | null>(null);
+  categoryName = signal<string | null>(null);
+  subcategoryName = signal<string | null>(null)
 
-  constructor() {
-    this.loadSelection();
-  }
 
-    /**
-   * Load previously selected category and subcategory from localStorage.
-   * Only runs in the browser context.
-   */
-  loadSelection() {
-    if (isPlatformBrowser(this.platformId)) {
-      const stored = localStorage.getItem('selected_subcategory');
-      const catId = localStorage.getItem('selected_category_id');
-      if (stored) {
-        this.selectedSubcategory.set(JSON.parse(stored));
-      }
-      if (catId) {
-        this.categoryId.set(catId);
-      }
+ngOnInit() {
+    const categoryId = this.route.snapshot.paramMap.get('categoryId');
+    const subId = this.route.snapshot.paramMap.get('subId');
+
+    if (!categoryId || !subId) {
+      this.error.set('No category selected.');
+      return;
     }
-  }
+
+    this.categoryId.set(categoryId);
+    this.selectedSubcategory.set(subId);
+
+    this.api.getCategories()
+    .then(categories => {
+      const category = categories.find(c => c._id === categoryId);
+      if (category) {
+        this.categoryName.set(category.name);
+      }
+    })
+    .catch(err => console.error('Failed to load category', err));
+
+    this.api.getSubCategories(categoryId)
+    .then(subcategories => {
+      const sub = subcategories.find(s => s._id === subId);
+      if (sub) {
+        this.subcategoryName.set(sub.name);
+        this.selectedSubcategory.set(sub._id); 
+      }
+    })
+    .catch(err => console.error('Failed to load subcategory', err));
+}
+  
 
    /**
    * Submit a prompt to the backend API.
@@ -81,7 +97,7 @@ export class PromptComponent {
     try {
       const result = await this.api.submitPrompt({
         categoryId: catId,
-        subCategoryId: subcategory._id,
+        subCategoryId: subcategory,
         prompt: promptTextValue,
       });
 
@@ -96,11 +112,11 @@ export class PromptComponent {
   }
 
    /**
-   * Navigate back to the categories selection page.
+   * Navigate back to the previous page.
    */
-  goBack() {
-    this.router.navigate(['/categories']);
-  }
+    goBack() {
+      this.navigation.goBack();
+    }
 
   /**
    * Close the lesson result modal and clear the displayed lesson.

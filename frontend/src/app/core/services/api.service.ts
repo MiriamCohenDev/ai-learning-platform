@@ -2,6 +2,7 @@ import { Injectable, inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { RegisterRequest, LoginRequest, AuthResponse } from '../../models/auth.model';
 import { environment } from '../../../environments/environment';
+import { TokenService } from './token.service';
 
 /**
  * ApiService handles all HTTP requests to the backend API.
@@ -13,7 +14,7 @@ import { environment } from '../../../environments/environment';
  * - Admin operations (fetch users and user history)
  * 
  * Notes:
- * - Checks if running in the browser before using localStorage or environment values.
+ * - Checks if running in the browser before using cookies or environment values.
  * - Throws errors with messages if the API response is not ok.
  */
 @Injectable({ providedIn: 'root' })
@@ -21,6 +22,7 @@ export class ApiService {
   /** Base URL of the backend API, read from environment config */
   private baseUrl = environment.apiUrl;
   private platformId = inject(PLATFORM_ID);
+   private tokenService = inject(TokenService);
 
   constructor() {
     // Ensure baseUrl is set only in the browser
@@ -220,10 +222,10 @@ export class ApiService {
 
     /**
    * Returns the HTTP headers for authenticated requests.
-   * Adds Authorization header with JWT if token exists in localStorage.
+   * Adds Authorization header with JWT if token exists in cookies.
    */
   private getAuthHeaders(): HeadersInit {
-    const token = localStorage.getItem('access_token');
+    const token = this.tokenService.getToken();
     return {
       'Content-Type': 'application/json',
       ...(token ? { 'Authorization': `Bearer ${token}` } : {}),

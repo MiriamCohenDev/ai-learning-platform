@@ -1,34 +1,51 @@
 import { inject, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { Router, CanActivateFn } from '@angular/router';
+import { Router, CanActivateFn, UrlTree } from '@angular/router';
+import { TokenService } from '../services/token.service';
+import { jwtDecode } from 'jwt-decode';
 
 /**
- * Guard to protect routes that require authentication.
- * 
- * Checks if the code is running in the browser (not server-side) and
- * whether an access token exists in localStorage.  
- * - If the token exists, allows access.
- * - If not, redirects the user to the login page.
- * 
- * Purpose:
- *  - Prevents unauthenticated users from accessing protected routes.
- *  - Ensures proper behavior in server-side rendering (Angular Universal),
- *    by blocking route activation on the server.
+ * Authentication Guard (authGuard)
+ *
+ * Protects Angular routes that require a logged-in user.
+ * Checks if a JWT token exists and is still valid.
+ * If the token is missing, expired, or invalid – redirects to /auth.
+ *
+ * Returns:
+ *  - true: if the user is authenticated and the token is valid.
+ *  - UrlTree to /auth: if the user is unauthenticated or the token is invalid.
+ *
+ * Notes:
+ *  - Works with server-side rendering (Angular Universal) – blocks routes on the server.
+ *  - Uses TokenService to get and delete the token as needed.
  */
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = (route, state): boolean | UrlTree => {
   const router = inject(Router);
   const platformId = inject(PLATFORM_ID);
-  // If running on the server, redirect to auth (do not render protected routes)
+  const tokenService = inject(TokenService);
+
   if (!isPlatformBrowser(platformId)) {
-    try {
-      router.navigate(['/auth']);
-    } catch {}
-    return false;
+    return router.parseUrl('/auth');
   }
 
-  const token = localStorage.getItem('access_token');
-  if (token) return true;
+  const token = tokenService.getToken();
+  if (!token) {
+    return router.parseUrl('/auth');
+  }
 
-  router.navigate(['/auth']);
-  return false;
+  try {
+    const decoded: any = jwtDecode(token);
+
+    const now = Math.floor(Date.now() / 1000);
+    if (!decoded.exp || decoded.exp < now) {
+      tokenService.deleteToken();
+      return router.parseUrl('/auth');
+    }
+
+    return true; 
+  } catch (err) {
+    console.error('Invalid token', err);
+    tokenService.deleteToken();
+    return router.parseUrl('/auth');
+  }
 };

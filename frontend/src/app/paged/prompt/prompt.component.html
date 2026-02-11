@@ -3,22 +3,27 @@
     <div class="card-header">
       <button class="back-btn" (click)="goBack()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <path d="M19 12H5M12 19l7-7-7-7"/>
+          <path d="M19 12H5M12 19l7-7-7-7" />
         </svg>
         <span>Back</span>
       </button>
       <div>
         <h2>Create Your Lesson</h2>
         <p class="subtitle">Tell us what you'd like to learn</p>
-        <div *ngIf="selectedSubcategory()" class="breadcrumb">
-          Subcategory: <strong>{{ selectedSubcategory()?.name }}</strong>
+        <div *ngIf="categoryName()" class="breadcrumb">
+          Category: <strong>{{ categoryName() }}</strong>
         </div>
+
+        <div *ngIf="subcategoryName()" class="breadcrumb">
+          Subcategory: <strong>{{ subcategoryName() }}</strong>
+        </div>
+
       </div>
     </div>
 
     <div *ngIf="error()" class="alert alert-error">
       <svg viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
       </svg>
       <span>{{ error() }}</span>
     </div>
@@ -26,14 +31,9 @@
     <div *ngIf="!showResult()" class="form-section">
       <div class="form-group">
         <label for="prompt-input" class="form-label">Your Learning Prompt</label>
-        <textarea
-          id="prompt-input"
-          class="textarea"
-          [ngModel]="promptText()"
-          (ngModelChange)="promptText.set($event)"
+        <textarea id="prompt-input" class="textarea" [ngModel]="promptText()" (ngModelChange)="promptText.set($event)"
           placeholder="Example: Explain the basics of machine learning, or give me the first lesson on this topic..."
-          [disabled]="loading()"
-          rows="6">
+          [disabled]="loading()" rows="6">
         </textarea>
         <div class="char-count">
           {{ promptText().length }} characters
@@ -41,13 +41,10 @@
       </div>
 
       <div class="button-group">
-        <button 
-          class="btn btn-submit" 
-          (click)="submitPrompt()" 
-          [disabled]="loading() || !promptText().trim()">
+        <button class="btn btn-submit" (click)="submitPrompt()" [disabled]="loading() || !promptText().trim()">
           <span *ngIf="!loading()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-              <path d="M12 5v14M5 12h14"/>
+              <path d="M12 5v14M5 12h14" />
             </svg>
             Submit Prompt
           </span>
@@ -64,7 +61,7 @@
         <h3>Your Lesson</h3>
         <button class="close-btn" (click)="closeResult()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
-            <path d="M18 6L6 18M6 6l12 12"/>
+            <path d="M18 6L6 18M6 6l12 12" />
           </svg>
         </button>
       </div>

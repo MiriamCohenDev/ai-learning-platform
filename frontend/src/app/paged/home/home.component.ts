@@ -2,6 +2,7 @@ import { Component, PLATFORM_ID, inject, OnInit } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
+import { TokenService } from '../../core/services/token.service';
 
 @Component({
   selector: 'app-home',
@@ -14,14 +15,15 @@ export class HomeComponent implements OnInit {
   public router = inject(Router);
   private platformId = inject(PLATFORM_ID);
   public authService = inject(AuthService);
+  private tokenService = inject(TokenService);
   
 /**
-   * Logs out the user by removing the JWT from localStorage.
-   * Only runs on the browser since localStorage is not available on the server.
+   * Logs out the user by removing the JWT from cookies.
+   * Only runs on the browser since cookies are not available on the server.
    */
   logout() {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('access_token');
+      this.tokenService.deleteToken();
     }
     this.router.navigate(['/auth']);
   }
@@ -33,7 +35,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     // Defensive check: if no token, redirect to auth
     if (isPlatformBrowser(this.platformId)) {
-      const token = localStorage.getItem('access_token');
+      const token = this.tokenService.getToken();
       if (!token) this.router.navigate(['/auth']);
     }
   }

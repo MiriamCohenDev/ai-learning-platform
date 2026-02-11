@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../../core/services/api.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
+import { NavigationService } from '../../core/services/navigation.service';
 
 /**
  * Component for displaying a single lesson (history detail).
@@ -29,6 +30,7 @@ export class HistoryDetailComponent implements OnInit {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   public authService = inject(AuthService);
+  private navigation = inject(NavigationService);
 
   lesson: any;
   isLoaded = false;
@@ -63,8 +65,11 @@ export class HistoryDetailComponent implements OnInit {
     }
   }
 
-/** Navigate back to the history list */
-  back() {
-    this.router.navigate(['/history']);
-  }
+   /**
+   * Navigate back to the previous page.
+   */
+    goBack() {
+      this.navigation.goBack();
+    }
+
 }

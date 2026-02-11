@@ -18,7 +18,8 @@ export const routes: Routes = [
 
   { path: 'categories', component: CategoriesComponent, canActivate: [authGuard] },
   { path: 'categories/:id/sub', component: SubcategoriesComponent, canActivate: [authGuard] },
-  { path: 'prompt', component: PromptComponent, canActivate: [authGuard] },
+  { path: 'prompt/:categoryId/:subId', component: PromptComponent, canActivate: [authGuard] },
+
 
   { path: 'history', component: HistoryComponent, canActivate: [authGuard] },
   { path: 'history/:id', component: HistoryDetailComponent, canActivate: [authGuard] },

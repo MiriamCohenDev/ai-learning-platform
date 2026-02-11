@@ -47,6 +47,7 @@ export class CategoriesSeedService implements OnModuleInit {
     const sports = await this.categoryModel.create({ name: 'Sports' });
     const music = await this.categoryModel.create({ name: 'Music' });
     const personalDevelopment = await this.categoryModel.create({ name: 'Personal Development' });
+    const other = await this.categoryModel.create({ name: 'Other' });
 
     // Create sub-categories and associate them with their parent category
     await this.subCategoryModel.insertMany([
@@ -61,6 +62,7 @@ export class CategoriesSeedService implements OnModuleInit {
       { name: 'Ruby', category_id: programming._id },
       { name: 'TypeScript', category_id: programming._id },
       { name: 'Kotlin', category_id: programming._id },
+      { name: 'Other', category_id: programming._id },
 
       // Databases
       { name: 'MongoDB', category_id: databases._id },
@@ -73,6 +75,7 @@ export class CategoriesSeedService implements OnModuleInit {
       { name: 'DynamoDB', category_id: databases._id },
       { name: 'MariaDB', category_id: databases._id },
       { name: 'Elasticsearch', category_id: databases._id },
+      { name: 'Other', category_id: databases._id },
 
       // Design
       { name: 'Graphic Design', category_id: design._id },
@@ -85,6 +88,7 @@ export class CategoriesSeedService implements OnModuleInit {
       { name: 'Photography', category_id: design._id },
       { name: 'Branding', category_id: design._id },
       { name: 'Color Theory', category_id: design._id },
+      { name: 'Other', category_id: design._id },
 
       // Business
       { name: 'Marketing', category_id: business._id },
@@ -97,6 +101,7 @@ export class CategoriesSeedService implements OnModuleInit {
       { name: 'Strategy', category_id: business._id },
       { name: 'Operations', category_id: business._id },
       { name: 'Project Management', category_id: business._id },
+      { name: 'Other', category_id: business._id },
 
       // Science
       { name: 'Physics', category_id: science._id },
@@ -109,6 +114,7 @@ export class CategoriesSeedService implements OnModuleInit {
       { name: 'Ecology', category_id: science._id },
       { name: 'Neuroscience', category_id: science._id },
       { name: 'Robotics', category_id: science._id },
+      { name: 'Other', category_id: science._id },
 
       // Arts
       { name: 'Painting', category_id: arts._id },
@@ -121,6 +127,7 @@ export class CategoriesSeedService implements OnModuleInit {
       { name: 'Architecture', category_id: arts._id },
       { name: 'Ceramics', category_id: arts._id },
       { name: 'Calligraphy', category_id: arts._id },
+      { name: 'Other', category_id: arts._id },
 
       // Languages
       { name: 'English', category_id: languages._id },
@@ -133,6 +140,7 @@ export class CategoriesSeedService implements OnModuleInit {
       { name: 'Arabic', category_id: languages._id },
       { name: 'Hebrew', category_id: languages._id },
       { name: 'Italian', category_id: languages._id },
+      { name: 'Other', category_id: languages._id },
 
       // Sports
       { name: 'Football', category_id: sports._id },
@@ -145,6 +153,7 @@ export class CategoriesSeedService implements OnModuleInit {
       { name: 'Martial Arts', category_id: sports._id },
       { name: 'Gymnastics', category_id: sports._id },
       { name: 'Skiing', category_id: sports._id },
+      { name: 'Other', category_id: sports._id },
 
       // Music
       { name: 'Rock', category_id: music._id },
@@ -157,6 +166,7 @@ export class CategoriesSeedService implements OnModuleInit {
       { name: 'Reggae', category_id: music._id },
       { name: 'Blues', category_id: music._id },
       { name: 'Folk', category_id: music._id },
+      { name: 'Other', category_id: music._id },
 
       // Personal Development
       { name: 'Productivity', category_id: personalDevelopment._id },
@@ -169,6 +179,10 @@ export class CategoriesSeedService implements OnModuleInit {
       { name: 'Emotional Intelligence', category_id: personalDevelopment._id },
       { name: 'Self-Confidence', category_id: personalDevelopment._id },
       { name: 'Decision Making', category_id: personalDevelopment._id },
+      { name: 'Other', category_id: personalDevelopment._id },
+
+      // Other
+      { name: 'Other', category_id: other._id },
     ]);
 
   }

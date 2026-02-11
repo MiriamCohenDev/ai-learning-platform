@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { IsIsraeliId } from '../../../common/validators/israeli-id.validator';
+import { IsUniversalId } from '../../../common/validators/universal-id.validator';
 
 /**
  * DTO for login request.
@@ -11,6 +11,6 @@ export class LoginUserDto {
   name!: string;
 
   @IsNotEmpty()
-  @IsIsraeliId({ message: 'ID Number must be a valid Israeli ID' })
+  @IsUniversalId({ message: 'ID Number must be a valid universal ID' })
   idNumber!: string;
 }

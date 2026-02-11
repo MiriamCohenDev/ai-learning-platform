@@ -63,9 +63,9 @@
           type="text"
           [(ngModel)]="loginIdNumber"
           name="loginIdNumber"
-          placeholder="9 digit ID number"
-          maxlength="9"
-          pattern="\d*"
+          placeholder="ID number"
+          maxlength="20"
+          pattern="^[a-zA-Z0-9-_]+$"
           [disabled]="isLoading()"
           required
         />
@@ -105,9 +105,9 @@
           type="text"
           [(ngModel)]="registerIdNumber"
           name="registerIdNumber"
-          placeholder="9 digit ID number"
-          maxlength="9"
-          pattern="\d*"
+          placeholder="ID number"
+          maxlength="20"
+          pattern="^[a-zA-Z0-9-_]+$"
           [disabled]="isLoading()"
           required
         />

@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString, IsOptional, Matches } from 'class-validator';
-import { IsIsraeliId } from '../../../common/validators/israeli-id.validator';
+import { IsUniversalId } from '../../../common/validators/universal-id.validator';
 
 /**
  * DTO for creating a new user.
@@ -15,7 +15,7 @@ export class CreateUserDto {
   phone?: string;
 
   @IsNotEmpty()
-  @IsIsraeliId({ message: 'ID Number must be a valid Israeli ID' })
+  @IsUniversalId({ message: 'ID Number must be a valid universal ID' })
   idNumber!: string;
 }
 

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ApiService } from '../../core/services/api.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
+import { NavigationService } from '../../core/services/navigation.service';
 
 /**
  * Component for displaying lesson history.
@@ -29,7 +30,8 @@ export class HistoryComponent implements OnInit {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   public authService = inject(AuthService);
-   private route = inject(ActivatedRoute); 
+  private route = inject(ActivatedRoute); 
+  private navigation = inject(NavigationService);
 
   lessons: any[] = [];
   private viewingUserId?: string;
@@ -70,5 +72,12 @@ export class HistoryComponent implements OnInit {
       this.router.navigate(['/history', id]);
     }
   }
+     /**
+   * Navigate back to the previous page.
+   */
+    goBack() {
+      this.navigation.goBack();
+    }
+
 
 }

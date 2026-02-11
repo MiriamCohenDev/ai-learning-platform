@@ -25,6 +25,7 @@ export class PromptsService {
     apiKey: process.env.OPENAI_API_KEY,
   });
 
+
   /**
    * Creates a new prompt for a user and generates an AI lesson.
    *
@@ -32,14 +33,19 @@ export class PromptsService {
    * 1. Validates prompt length (max 10000 characters).
    * 2. Checks that both the category and sub-category exist.
    * 3. Ensures that the selected sub-category belongs to the chosen category.
-   * 4. Constructs a detailed AI instruction string based on category, sub-category, and user prompt.
+   * 4. Constructs a detailed AI instruction string based on category, sub-category, and user prompt:
+   *    - Category = "Other" → AI ignores category/sub-category, generates lesson strictly based on user prompt.
+   *    - SubCategory = "Other" → AI generates lesson based on category only, ignoring sub-category.
+   *    - Otherwise → AI generates lesson strictly related to both category and sub-category.
+   *    - All prompts enforce that the response must be an educational lesson only.
+   *    - If the prompt is not a lesson or out of scope → AI returns exactly "out of scope".
    * 5. Calls AI provider to generate lesson.
    * 6. Checks that AI response is not empty and not "out of scope".
    * 7. Saves the prompt and AI response to the database.
    *
    * Throws:
-   * - BadRequestException for invalid input or out-of-scope prompt.
-   * - InternalServerErrorException if AI service fails.
+   * - BadRequestException for invalid input, non-existing category/sub-category, or out-of-scope prompts.
+   * - InternalServerErrorException if AI service fails or returns empty response.
    *
    * @param userId - ID of the authenticated user creating the prompt
    * @param dto - Data transfer object containing categoryId, subCategoryId, and prompt text
@@ -62,16 +68,36 @@ export class PromptsService {
         throw new BadRequestException('Sub-category does not belong to the selected category');
     }
 
-    const aiPrompt = `
-    You are an expert teacher. 
-    Only generate a lesson about the topic specified.
-    Category: ${category.name}
-    SubCategory: ${subCategory.name}
-    User Prompt: ${dto.prompt}
-    If the prompt is unrelated to the chosen category and sub-category, politely respond with exactly: out of scope. Do NOT include anything else if it is out of scope.
-    Please generate a detailed lesson ONLY if it matches the category and sub-category.
-    `;
+    let aiPrompt: string;
 
+    if (category.name === 'Other') {
+      aiPrompt = `
+      You are an expert teacher.
+      Only generate a detailed educational lesson strictly based on the user's input.
+      User Prompt: ${dto.prompt}
+      If the prompt is unrelated to educational lesson content, respond exactly with: out of scope.
+      Do NOT answer questions, provide opinions, or unrelated content.
+      Only create content suitable for a lesson.
+      `;
+    } else if (subCategory.name === 'Other') {
+      aiPrompt = `
+      You are an expert teacher.
+      Only generate a detailed educational lesson strictly related to the category: ${category.name}.
+      User Prompt: ${dto.prompt}
+      If the prompt is unrelated to the chosen category or not a lesson, respond exactly with: out of scope.
+      Do NOT include anything else if it is out of scope.
+      `;
+    } else {
+      aiPrompt = `
+      You are an expert teacher.
+      Only generate a detailed educational lesson strictly related to the category: ${category.name}
+      and sub-category: ${subCategory.name}.
+      User Prompt: ${dto.prompt}
+      If the prompt is unrelated to the chosen category/sub-category or not a lesson, respond exactly with: out of scope.
+      Do NOT include anything else if it is out of scope.
+      Please generate a detailed lesson ONLY if it matches the category and sub-category.
+      `;
+    }
 
     let aiProvider = createAiProvider();
 

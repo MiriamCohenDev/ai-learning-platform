@@ -3,6 +3,8 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../core/services/api.service';
+import { TokenService } from '../core/services/token.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-auth',
@@ -29,7 +31,7 @@ export class AuthComponent {
   private api = inject(ApiService);
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
-
+  private tokenService = inject(TokenService);
   toggleMode() {
     this.isLogin.set(!this.isLogin());
     this.error.set(null);
@@ -53,7 +55,7 @@ export class AuthComponent {
       });
 
       if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem('access_token', response.access_token);
+        this.tokenService.saveToken(response.access_token);
       }
 
       this.success.set('Login successful! Redirecting...');
@@ -74,9 +76,9 @@ export class AuthComponent {
       return;
     }
 
-    // Validate Israeli ID format (9 digits)
-    if (!/^\d{9}$/.test(this.registerIdNumber())) {
-      this.error.set('ID Number must be 9 digits');
+    // Validate Universal ID format (5-20 alphanumeric characters or hyphens/underscores)
+    if (!/^[a-zA-Z0-9-_]{5,20}$/.test(this.registerIdNumber())) {
+      this.error.set('ID Number');
       return;
     }
 
@@ -89,7 +91,7 @@ export class AuthComponent {
       });
 
       if (isPlatformBrowser(this.platformId)) {
-        localStorage.setItem('access_token', response.access_token);
+        this.tokenService.saveToken(response.access_token);
       }
 
       this.success.set('Registration successful! Redirecting...');

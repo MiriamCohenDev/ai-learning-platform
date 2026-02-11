@@ -1,26 +1,28 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { TokenService } from './token.service';
 
 /**
  * AuthService handles client-side authentication state.
  * 
  * Responsibilities:
- * - Reading JWT from localStorage
+ * - Reading JWT from cookies
  * - Extracting user role from JWT
  * - Providing helper methods for route guards and UI logic
  *
  * Notes:
  * - This service does not handle login/logout HTTP requests.
- * - JWT is expected to be stored in localStorage under 'access_token'.
+ * - JWT is expected to be stored in cookies under 'access_token'.
  */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
+   private tokenService = inject(TokenService);
    /**
-   * Returns the JWT access token from localStorage.
+   * Returns the JWT access token from cookies.
    * @returns JWT string if present, otherwise null
    */
   get token(): string | null {
-    return localStorage.getItem('access_token');
+    return this.tokenService.getToken();
   }
 
   /**

@@ -6,7 +6,7 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: 0
   },
   {
-    path: 'prompt',
+    path: 'prompt/:categoryId/:subId',
     renderMode: 0
   },
     {
