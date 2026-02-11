@@ -9,6 +9,10 @@ interface SelectedSubcategory {
   name: string;
 }
 
+/**
+ * Component for submitting user prompts and displaying AI-generated lessons.
+ * Handles category/subcategory selection, input validation, API requests, and displaying results.
+ */
 @Component({
   selector: 'app-prompt',
   standalone: true,
@@ -33,6 +37,10 @@ export class PromptComponent {
     this.loadSelection();
   }
 
+    /**
+   * Load previously selected category and subcategory from localStorage.
+   * Only runs in the browser context.
+   */
   loadSelection() {
     if (isPlatformBrowser(this.platformId)) {
       const stored = localStorage.getItem('selected_subcategory');
@@ -46,6 +54,11 @@ export class PromptComponent {
     }
   }
 
+   /**
+   * Submit a prompt to the backend API.
+   * Performs input validation, shows loading state, and handles API response or errors.
+   * On success, displays the AI-generated lesson and clears the prompt input.
+   */
   async submitPrompt() {
     const subcategory = this.selectedSubcategory();
     const catId = this.categoryId();
@@ -82,10 +95,16 @@ export class PromptComponent {
     }
   }
 
+   /**
+   * Navigate back to the categories selection page.
+   */
   goBack() {
     this.router.navigate(['/categories']);
   }
 
+  /**
+   * Close the lesson result modal and clear the displayed lesson.
+   */
   closeResult() {
     this.showResult.set(false);
     this.success.set(null);

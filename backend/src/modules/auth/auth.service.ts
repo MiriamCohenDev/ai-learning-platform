@@ -9,10 +9,16 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
+    /**
+   * Validates user by name and idNumber.
+   */
   async validateUser(name: string, idNumber: string) {
     return this.usersService.validateUser(name, idNumber);
   }
 
+    /**
+   * Checks credentials and throws UnauthorizedException if invalid.
+   */
   async validateCredentials(name: string, idNumber: string) {
     const user = await this.usersService.findByIdNumber(idNumber);
     if (!user || user.name !== name) {
@@ -21,6 +27,9 @@ export class AuthService {
     return user;
   }
 
+    /**
+   * Generates JWT token for authenticated user.
+   */
   async login(user: any) {
     const payload = { sub: user._id || user.id, name: user.name, role: user.role };
     return {

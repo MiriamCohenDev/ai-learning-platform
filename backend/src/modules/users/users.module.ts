@@ -8,6 +8,9 @@ import { UsersSeedService } from 'src/database/seeds/users.seed';
 import { AdminController } from '../admin/admin.controller';
 import { PromptsModule } from '../prompts/prompts.module';
 
+/**
+ * UsersModule: Provides UsersService, UsersController and seeding service.
+ */
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),

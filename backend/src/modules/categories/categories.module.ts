@@ -6,6 +6,9 @@ import { Category, CategorySchema } from './schemas/category.schema';
 import { SubCategory, SubCategorySchema } from './schemas/sub-category.schema';
 import { CategoriesSeedService } from '../../database/seeds/categories.seed.service';
 
+/**
+ * CategoriesModule: Provides services, controllers, and seeding for categories/sub-categories.
+ */
 @Module({
   imports: [
     MongooseModule.forFeature([

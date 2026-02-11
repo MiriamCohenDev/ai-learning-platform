@@ -8,6 +8,9 @@ export enum UserRole {
   ADMIN = 'admin',
 }
 
+/**
+ * Mongoose schema for User collection.
+ */
 @Schema({ timestamps: true })
 export class User {
 

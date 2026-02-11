@@ -5,6 +5,17 @@ import { ApiService } from '../../core/services/api.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { AuthService } from '../../core/services/auth.service';
 
+/**
+ * Component for displaying a single lesson (history detail).
+ * 
+ * Behavior:
+ * - Regular users can view only their own lesson by lesson ID.
+ * - Admin users can view any user's lesson by providing a `userId` query parameter.
+ *   If a non-admin attempts to access another user's lesson, access is blocked.
+ * 
+ * The component fetches the lesson details from the backend using ApiService
+ * and manages loading state and change detection.
+ */
 @Component({
   standalone: true,
   selector: 'app-history-detail',
@@ -32,6 +43,7 @@ export class HistoryDetailComponent implements OnInit {
     try {
 
       if (userId) {
+        // Admin viewing another user's lesson
         if (!this.authService.isAdmin()) {
           console.error('Not authorized to view other users lesson');
           return;
@@ -39,6 +51,7 @@ export class HistoryDetailComponent implements OnInit {
 
         this.lesson = await this.api.getUserPrompt(userId, id);
       } else {
+        // Regular user: view own lesson
         this.lesson = await this.api.getLessonById(id);
       }
 
@@ -50,7 +63,7 @@ export class HistoryDetailComponent implements OnInit {
     }
   }
 
-
+/** Navigate back to the history list */
   back() {
     this.router.navigate(['/history']);
   }

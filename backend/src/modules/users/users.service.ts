@@ -9,6 +9,11 @@ export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
+  /**
+   * Creates a new user.
+   * Throws BadRequestException if ID number already exists.
+   * Handles potential race-condition duplicate key errors from MongoDB.
+   */
   async create(createUserDto: CreateUserDto): Promise<User> {
     const { idNumber } = createUserDto;
 
@@ -27,10 +32,17 @@ export class UsersService {
     }
   }
 
+    /**
+   * Returns all users.
+   */
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
   }
 
+    /**
+   * Validates a user by name and idNumber.
+   * Returns sanitized object (removes __v) if valid.
+   */
   async validateUser(name: string, idNumber: string) {
     if (!name || !idNumber) return null;
     const user = await this.userModel.findOne({ idNumber }).exec();
@@ -41,6 +53,9 @@ export class UsersService {
     return result;
   }
 
+    /**
+   * Finds a user by ID number.
+   */
   async findByIdNumber(idNumber: string) {
     return this.userModel.findOne({ idNumber }).exec();
   }

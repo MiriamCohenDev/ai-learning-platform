@@ -7,6 +7,10 @@ import { JwtStrategy } from './jwt.strategy';
 import { UsersModule } from '../users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
+/**
+ * Authentication module.
+ * Provides AuthService, AuthController, and JWT strategy.
+ */
 @Module({
   imports: [
     forwardRef(() => UsersModule),
