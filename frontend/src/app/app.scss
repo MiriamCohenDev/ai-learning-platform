@@ -1,0 +1,28 @@
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: transparent; /* no border */
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.back-btn .icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  stroke-width: 2;
+}
+
+.back-btn:hover {
+  background-color: rgba(0,0,0,0.05); /* subtle hover */
+}
+
+.back-btn:active {
+  transform: translateY(1px);
+}

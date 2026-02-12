@@ -1,0 +1,43 @@
+.navbar {
+  width: 100%;
+  background-color: #fff;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  .navbar-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .logout-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      color: #333;
+      transition: all 0.2s ease;
+
+      svg {
+        width: 1.2rem;
+        height: 1.2rem;
+        stroke-width: 2;
+      }
+
+      &:hover {
+        color: #000;
+      }
+    }
+  }
+}

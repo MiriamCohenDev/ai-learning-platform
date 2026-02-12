@@ -10,33 +10,48 @@ export class NavigationService {
    */
   goBack() {
     const url = this.router.url;
+    const queryParams = this.route.snapshot.queryParams;
+    const userId = queryParams['userId'];
 
+    // ADMIN viewing another user's history
+    if (url.startsWith('/history/') && userId) {
+      // from lesson details -> user's history
+      const segments = url.split('/');
+      const lessonId = segments.length > 2 ? segments[2] : null;
+      if (lessonId) {
+        this.router.navigate(['/history'], { queryParams: { userId } });
+        return;
+      }
+    }
+
+    if (url.startsWith('/history') && userId) {
+      // from user's history -> admin users page
+      this.router.navigate(['/admin/users']);
+      return;
+    }
+
+    // Normal user or admin without userId query
     if (url.startsWith('/categories/') && url.includes('/sub')) {
-      // from subcategories -> categories
       this.router.navigate(['/categories']);
     } else if (url.startsWith('/prompt/')) {
-  // URL: /prompt/:categoryId/:subId
-  const segments = url.split('/');
-  const categoryId = segments.length > 2 ? segments[2] : null;
+      // URL: /prompt/:categoryId/:subId
+      const segments = url.split('/');
+      const categoryId = segments.length > 2 ? segments[2] : null;
 
-  if (categoryId) {
-    this.router.navigate(['/categories', categoryId, 'sub']);
-  } else {
-    // fallback
-    this.router.navigate(['/categories']);
-  }
+      if (categoryId) {
+        this.router.navigate(['/categories', categoryId, 'sub']);
+      } else {
+        this.router.navigate(['/categories']);
+      }
 
     } else if (url.startsWith('/categories')) {
-      // from categories -> home
       this.router.navigate(['/']);
-    } else if (url.startsWith('/history/') && url !== '/history') {
+    } else if (url.startsWith('/history/') && !userId) {
       // from history detail -> history
       this.router.navigate(['/history']);
-    } else if (url === '/history') {
-      // from history -> home
+    } else if (url === '/history' && !userId) {
       this.router.navigate(['/']);
     } else {
-      // default fallback
       this.router.navigate(['/']);
     }
   }

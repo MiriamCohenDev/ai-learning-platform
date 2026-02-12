@@ -118,6 +118,10 @@ ngOnInit() {
       this.navigation.goBack();
     }
 
+    createNewLesson() {
+      this.router.navigate(['/categories']);
+    }
+
   /**
    * Close the lesson result modal and clear the displayed lesson.
    */

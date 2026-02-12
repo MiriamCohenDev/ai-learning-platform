@@ -1,4 +1,4 @@
-
+<!-- 
 <style>
   :host {
     --bright-blue: oklch(51.01% 0.274 263.83);
@@ -172,10 +172,14 @@
       margin-block: 1.5rem;
     }
   }
-</style>
+</style> -->
 
+
+
+<app-navbar *ngIf="showNavbarFlag"></app-navbar>
 <main class="main">
-
+<router-outlet />
 </main>
 
-<router-outlet />
+
+
