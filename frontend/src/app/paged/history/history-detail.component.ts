@@ -65,11 +65,11 @@ export class HistoryDetailComponent implements OnInit {
     }
   }
 
-   /**
-   * Navigate back to the previous page.
-   */
-    goBack() {
-      this.navigation.goBack();
-    }
+  /**
+  * Navigate back to the previous page.
+  */
+  goBack() {
+    this.navigation.goBack();
+  }
 
 }

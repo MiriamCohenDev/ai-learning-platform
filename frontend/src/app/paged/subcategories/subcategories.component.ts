@@ -52,22 +52,22 @@ export class SubcategoriesComponent implements OnInit {
     }
   }
 
-  
-   /**
-   * Navigate back to the previous page.
-   */
-    goBack() {
-      this.navigation.goBack();
-    }
+
+  /**
+  * Navigate back to the previous page.
+  */
+  goBack() {
+    this.navigation.goBack();
+  }
 
 
-    /**
-   * Handle sub-category selection
-   * 
-   * and navigates to the prompt submission page.
-   * 
-   * @param sub The selected sub-category object
-   */
+  /**
+ * Handle sub-category selection
+ * 
+ * and navigates to the prompt submission page.
+ * 
+ * @param sub The selected sub-category object
+ */
   choose(sub: { _id: string; name: string }) {
     const categoryId = this.route.snapshot.paramMap.get('id');
     if (!categoryId) return;

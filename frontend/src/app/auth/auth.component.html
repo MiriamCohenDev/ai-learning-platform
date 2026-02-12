@@ -8,18 +8,10 @@
 
     <!-- Tabs -->
     <div class="auth-tabs">
-      <button 
-        class="tab" 
-        [class.active]="isLogin()"
-        (click)="toggleMode()"
-      >
+      <button class="tab" [class.active]="isLogin()" (click)="toggleMode()">
         Login
       </button>
-      <button 
-        class="tab" 
-        [class.active]="!isLogin()"
-        (click)="toggleMode()"
-      >
+      <button class="tab" [class.active]="!isLogin()" (click)="toggleMode()">
         Register
       </button>
     </div>
@@ -45,37 +37,17 @@
     <form *ngIf="isLogin()" (ngSubmit)="submitLogin()" class="auth-form">
       <div class="form-group">
         <label for="login-name">Name</label>
-        <input
-          id="login-name"
-          type="text"
-          [(ngModel)]="loginName"
-          name="loginName"
-          placeholder="Enter your name"
-          [disabled]="isLoading()"
-          required
-        />
+        <input id="login-name" type="text" [(ngModel)]="loginName" name="loginName" placeholder="Enter your name"
+          [disabled]="isLoading()" required />
       </div>
 
       <div class="form-group">
         <label for="login-id">ID Number</label>
-        <input
-          id="login-id"
-          type="text"
-          [(ngModel)]="loginIdNumber"
-          name="loginIdNumber"
-          placeholder="ID number"
-          maxlength="20"
-          pattern="^[a-zA-Z0-9-_]+$"
-          [disabled]="isLoading()"
-          required
-        />
+        <input id="login-id" type="text" [(ngModel)]="loginIdNumber" name="loginIdNumber" placeholder="ID number"
+          maxlength="20" pattern="^[a-zA-Z0-9-_]+$" [disabled]="isLoading()" required />
       </div>
 
-      <button 
-        type="submit" 
-        class="btn btn-primary"
-        [disabled]="isLoading()"
-      >
+      <button type="submit" class="btn btn-primary" [disabled]="isLoading()">
         <span *ngIf="!isLoading()">Sign In</span>
         <span *ngIf="isLoading()" class="loading">
           <span class="spinner"></span>Signing in...
@@ -87,49 +59,23 @@
     <form *ngIf="!isLogin()" (ngSubmit)="submitRegister()" class="auth-form">
       <div class="form-group">
         <label for="register-name">Name</label>
-        <input
-          id="register-name"
-          type="text"
-          [(ngModel)]="registerName"
-          name="registerName"
-          placeholder="Enter your full name"
-          [disabled]="isLoading()"
-          required
-        />
+        <input id="register-name" type="text" [(ngModel)]="registerName" name="registerName"
+          placeholder="Enter your full name" [disabled]="isLoading()" required />
       </div>
 
       <div class="form-group">
         <label for="register-id">ID Number</label>
-        <input
-          id="register-id"
-          type="text"
-          [(ngModel)]="registerIdNumber"
-          name="registerIdNumber"
-          placeholder="ID number"
-          maxlength="20"
-          pattern="^[a-zA-Z0-9-_]+$"
-          [disabled]="isLoading()"
-          required
-        />
+        <input id="register-id" type="text" [(ngModel)]="registerIdNumber" name="registerIdNumber"
+          placeholder="ID number" maxlength="20" pattern="^[a-zA-Z0-9-_]+$" [disabled]="isLoading()" required />
       </div>
 
       <div class="form-group">
         <label for="register-phone">Phone Number (Optional)</label>
-        <input
-          id="register-phone"
-          type="tel"
-          [(ngModel)]="registerPhone"
-          name="registerPhone"
-          placeholder="Enter your phone number"
-          [disabled]="isLoading()"
-        />
+        <input id="register-phone" type="tel" [(ngModel)]="registerPhone" name="registerPhone"
+          placeholder="Enter your phone number" [disabled]="isLoading()" />
       </div>
 
-      <button 
-        type="submit" 
-        class="btn btn-primary"
-        [disabled]="isLoading()"
-      >
+      <button type="submit" class="btn btn-primary" [disabled]="isLoading()">
         <span *ngIf="!isLoading()">Create Account</span>
         <span *ngIf="isLoading()" class="loading">
           <span class="spinner"></span>Creating account...

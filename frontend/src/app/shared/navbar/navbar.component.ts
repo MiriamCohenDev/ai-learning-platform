@@ -16,9 +16,13 @@ export class NavbarComponent {
   public authService = inject(AuthService);
   private tokenService = inject(TokenService);
 
-    showNavbar(): boolean {
+  showNavbar(): boolean {
     const url = this.router.url;
     return !url.startsWith('/auth');
+  }
+
+  logo() {
+    this.router.navigate(['/']);
   }
 
 

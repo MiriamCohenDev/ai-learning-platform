@@ -18,7 +18,7 @@ import { NavigationService } from '../../core/services/navigation.service';
   templateUrl: './prompt.component.html',
   styleUrls: ['./prompt.component.scss'],
 })
-export class PromptComponent implements OnInit{
+export class PromptComponent implements OnInit {
   private api = inject(ApiService);
   private router = inject(Router);
   private platformId = inject(PLATFORM_ID);
@@ -37,7 +37,7 @@ export class PromptComponent implements OnInit{
   subcategoryName = signal<string | null>(null)
 
 
-ngOnInit() {
+  ngOnInit() {
     const categoryId = this.route.snapshot.paramMap.get('categoryId');
     const subId = this.route.snapshot.paramMap.get('subId');
 
@@ -50,31 +50,31 @@ ngOnInit() {
     this.selectedSubcategory.set(subId);
 
     this.api.getCategories()
-    .then(categories => {
-      const category = categories.find(c => c._id === categoryId);
-      if (category) {
-        this.categoryName.set(category.name);
-      }
-    })
-    .catch(err => console.error('Failed to load category', err));
+      .then(categories => {
+        const category = categories.find(c => c._id === categoryId);
+        if (category) {
+          this.categoryName.set(category.name);
+        }
+      })
+      .catch(err => console.error('Failed to load category', err));
 
     this.api.getSubCategories(categoryId)
-    .then(subcategories => {
-      const sub = subcategories.find(s => s._id === subId);
-      if (sub) {
-        this.subcategoryName.set(sub.name);
-        this.selectedSubcategory.set(sub._id); 
-      }
-    })
-    .catch(err => console.error('Failed to load subcategory', err));
-}
-  
+      .then(subcategories => {
+        const sub = subcategories.find(s => s._id === subId);
+        if (sub) {
+          this.subcategoryName.set(sub.name);
+          this.selectedSubcategory.set(sub._id);
+        }
+      })
+      .catch(err => console.error('Failed to load subcategory', err));
+  }
 
-   /**
-   * Submit a prompt to the backend API.
-   * Performs input validation, shows loading state, and handles API response or errors.
-   * On success, displays the AI-generated lesson and clears the prompt input.
-   */
+
+  /**
+  * Submit a prompt to the backend API.
+  * Performs input validation, shows loading state, and handles API response or errors.
+  * On success, displays the AI-generated lesson and clears the prompt input.
+  */
   async submitPrompt() {
     const subcategory = this.selectedSubcategory();
     const catId = this.categoryId();
@@ -111,16 +111,16 @@ ngOnInit() {
     }
   }
 
-   /**
-   * Navigate back to the previous page.
-   */
-    goBack() {
-      this.navigation.goBack();
-    }
+  /**
+  * Navigate back to the previous page.
+  */
+  goBack() {
+    this.navigation.goBack();
+  }
 
-    createNewLesson() {
-      this.router.navigate(['/categories']);
-    }
+  createNewLesson() {
+    this.router.navigate(['/categories']);
+  }
 
   /**
    * Close the lesson result modal and clear the displayed lesson.

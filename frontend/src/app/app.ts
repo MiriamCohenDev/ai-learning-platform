@@ -14,17 +14,13 @@ export class App {
   showNavbarFlag = true;
   public router = inject(Router);
   protected readonly title = signal('frontend');
-    ngOnInit() {
+  ngOnInit() {
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         const url = event.urlAfterRedirects;
         this.showNavbarFlag = !(url.startsWith('/auth'));
       });
-  }
-
-  showNavbar(): boolean {
-    return this.showNavbarFlag;
   }
   
 }

@@ -42,7 +42,7 @@ export const authGuard: CanActivateFn = (route, state): boolean | UrlTree => {
       return router.parseUrl('/auth');
     }
 
-    return true; 
+    return true;
   } catch (err) {
     console.error('Invalid token', err);
     tokenService.deleteToken();

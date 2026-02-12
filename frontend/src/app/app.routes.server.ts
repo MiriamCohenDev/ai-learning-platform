@@ -9,7 +9,7 @@ export const serverRoutes: ServerRoute[] = [
     path: 'prompt/:categoryId/:subId',
     renderMode: 0
   },
-    {
+  {
     path: 'history',
     renderMode: 0
   },

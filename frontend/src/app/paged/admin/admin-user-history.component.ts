@@ -8,9 +8,9 @@ import { NavigationService } from '../../core/services/navigation.service';
   selector: 'app-admin-user-history',
   standalone: true,
   imports: [
-    CommonModule, 
-    DatePipe,  
-    SlicePipe 
+    CommonModule,
+    DatePipe,
+    SlicePipe
   ],
   templateUrl: '../history/history.component.html',
 })
@@ -29,12 +29,12 @@ export class AdminUserHistoryComponent implements OnInit {
   openLesson(lessonId: string) {
     this.router.navigate(['/lesson', lessonId]);
   }
-    
+
   /**
    * Navigate back to the previous page.
    */
-    goBack() {
-      this.navigation.goBack();
-    }
+  goBack() {
+    this.navigation.goBack();
+  }
 
 }

@@ -30,7 +30,7 @@ export class HistoryComponent implements OnInit {
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
   public authService = inject(AuthService);
-  private route = inject(ActivatedRoute); 
+  private route = inject(ActivatedRoute);
   private navigation = inject(NavigationService);
 
   lessons: any[] = [];
@@ -52,17 +52,17 @@ export class HistoryComponent implements OnInit {
       // Regular user: fetch own history
       this.lessons = await this.api.getHistory();
     }
-    
+
     this.cdr.detectChanges();
-    
+
   }
 
-   /**
-   * Navigate to a specific lesson.
-   * - If admin viewing another user, preserves the userId query parameter.
-   * - Otherwise, navigates normally to the lesson detail.
-   * @param id The ID of the lesson to open
-   */
+  /**
+  * Navigate to a specific lesson.
+  * - If admin viewing another user, preserves the userId query parameter.
+  * - Otherwise, navigates normally to the lesson detail.
+  * @param id The ID of the lesson to open
+  */
   openLesson(id: string) {
     if (this.viewingUserId) {
       this.router.navigate(['/history', id], {
@@ -72,12 +72,12 @@ export class HistoryComponent implements OnInit {
       this.router.navigate(['/history', id]);
     }
   }
-     /**
-   * Navigate back to the previous page.
-   */
-    goBack() {
-      this.navigation.goBack();
-    }
+  /**
+* Navigate back to the previous page.
+*/
+  goBack() {
+    this.navigation.goBack();
+  }
 
 
 }

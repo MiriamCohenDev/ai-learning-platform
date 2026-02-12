@@ -22,7 +22,7 @@ export class ApiService {
   /** Base URL of the backend API, read from environment config */
   private baseUrl = environment.apiUrl;
   private platformId = inject(PLATFORM_ID);
-   private tokenService = inject(TokenService);
+  private tokenService = inject(TokenService);
 
   constructor() {
     // Ensure baseUrl is set only in the browser
@@ -31,12 +31,12 @@ export class ApiService {
     }
   }
 
-   /**
-   * Registers a new user.
-   * @param data RegisterRequest containing name, ID number, etc.
-   * @returns AuthResponse including JWT token
-   * @throws Error if registration fails
-   */
+  /**
+  * Registers a new user.
+  * @param data RegisterRequest containing name, ID number, etc.
+  * @returns AuthResponse including JWT token
+  * @throws Error if registration fails
+  */
   async register(data: RegisterRequest): Promise<AuthResponse> {
     const response = await fetch(`${this.baseUrl}/users/register`, {
       method: 'POST',
@@ -52,12 +52,12 @@ export class ApiService {
     return response.json();
   }
 
-    /**
-   * Logs in a user.
-   * @param data LoginRequest containing name and ID
-   * @returns AuthResponse including JWT token
-   * @throws Error if login fails
-   */
+  /**
+ * Logs in a user.
+ * @param data LoginRequest containing name and ID
+ * @returns AuthResponse including JWT token
+ * @throws Error if login fails
+ */
   async login(data: LoginRequest): Promise<AuthResponse> {
     const response = await fetch(`${this.baseUrl}/auth/login`, {
       method: 'POST',
@@ -73,10 +73,10 @@ export class ApiService {
     return response.json();
   }
 
-    /**
-   * Fetch all main categories.
-   * This endpoint is public, no authentication required.
-   */
+  /**
+ * Fetch all main categories.
+ * This endpoint is public, no authentication required.
+ */
   async getCategories(): Promise<Array<{ _id: string; name: string }>> {
     const res = await fetch(`${this.baseUrl}/categories`, {
       method: 'GET',
@@ -89,11 +89,11 @@ export class ApiService {
     return res.json();
   }
 
-    /**
-   * Fetch sub-categories for a specific category.
-   * This endpoint is public, no authentication required.
-   * @param categoryId The ID of the category
-   */
+  /**
+ * Fetch sub-categories for a specific category.
+ * This endpoint is public, no authentication required.
+ * @param categoryId The ID of the category
+ */
   async getSubCategories(categoryId: string): Promise<Array<{ _id: string; name: string }>> {
     const res = await fetch(`${this.baseUrl}/categories/${categoryId}/sub-categories`, {
       method: 'GET',
@@ -106,13 +106,13 @@ export class ApiService {
     return res.json();
   }
 
-    /**
-   * Submit a prompt to generate a lesson via AI.
-   * Requires user authentication (adds JWT in headers).
-   * @param data Object containing categoryId, subCategoryId, and user prompt
-   * @returns Object containing the AI-generated lesson
-   * @throws Error if submission fails or AI returns out-of-scope response
-   */
+  /**
+ * Submit a prompt to generate a lesson via AI.
+ * Requires user authentication (adds JWT in headers).
+ * @param data Object containing categoryId, subCategoryId, and user prompt
+ * @returns Object containing the AI-generated lesson
+ * @throws Error if submission fails or AI returns out-of-scope response
+ */
   async submitPrompt(data: {
     categoryId: string;
     subCategoryId: string;
@@ -130,11 +130,11 @@ export class ApiService {
     return res.json();
   }
 
-    /**
-   * Fetch the authenticated user's lesson history.
-   * @returns Array of lessons
-   * @throws Error if request fails
-   */
+  /**
+ * Fetch the authenticated user's lesson history.
+ * @returns Array of lessons
+ * @throws Error if request fails
+ */
   async getHistory(): Promise<any[]> {
     const res = await fetch(`${this.baseUrl}/prompts/history`, {
       method: 'GET',
@@ -149,10 +149,10 @@ export class ApiService {
     return res.json();
   }
 
-   /**
-   * Fetch a single lesson by ID for the authenticated user.
-   * @param id The prompt/lesson ID
-   */
+  /**
+  * Fetch a single lesson by ID for the authenticated user.
+  * @param id The prompt/lesson ID
+  */
   async getLessonById(id: string): Promise<any> {
     const res = await fetch(`${this.baseUrl}/prompts/history/${id}`, {
       method: 'GET',
@@ -202,11 +202,11 @@ export class ApiService {
     return res.json();
   }
 
-   /**
-   * Admin: Fetch a specific prompt for a specific user.
-   * @param userId The user ID
-   * @param promptId The prompt ID
-   */
+  /**
+  * Admin: Fetch a specific prompt for a specific user.
+  * @param userId The user ID
+  * @param promptId The prompt ID
+  */
   async getUserPrompt(userId: string, promptId: string): Promise<any> {
     const res = await fetch(`${this.baseUrl}/admin/users/${userId}/prompt/${promptId}`, {
       method: 'GET',
@@ -220,10 +220,10 @@ export class ApiService {
     return res.json();
   }
 
-    /**
-   * Returns the HTTP headers for authenticated requests.
-   * Adds Authorization header with JWT if token exists in cookies.
-   */
+  /**
+ * Returns the HTTP headers for authenticated requests.
+ * Adds Authorization header with JWT if token exists in cookies.
+ */
   private getAuthHeaders(): HeadersInit {
     const token = this.tokenService.getToken();
     return {

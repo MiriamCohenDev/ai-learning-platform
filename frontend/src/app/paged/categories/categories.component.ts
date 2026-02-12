@@ -34,42 +34,42 @@ export class CategoriesComponent implements OnInit {
     }
   }
 
-   /**
-   * Navigate to the sub-categories page for the selected category.
-   * @param categoryId - the ID of the category to open
-   */
+  /**
+  * Navigate to the sub-categories page for the selected category.
+  * @param categoryId - the ID of the category to open
+  */
 
 
 
-   /**
- * Opens the selected category.
- * 
- * Behavior:
- * 1. Finds the category by ID from the current list.
- * 2. If the category is "Other":
- *    - Fetches its sub-categories from the API.
- *    - Selects the single "Other" sub-category automatically.
- *    - Navigates directly to the prompt page, skipping sub-category selection.
- * 3. If the category is not "Other":
- *    - Navigates to the sub-categories page for the selected category.
- * 
- * This ensures that "Other" categories bypass the sub-category selection
- * and the prompt can be created immediately with the correct identifiers.
- * 
- * @param categoryId - The ID of the category selected by the user
- */
+  /**
+* Opens the selected category.
+* 
+* Behavior:
+* 1. Finds the category by ID from the current list.
+* 2. If the category is "Other":
+*    - Fetches its sub-categories from the API.
+*    - Selects the single "Other" sub-category automatically.
+*    - Navigates directly to the prompt page, skipping sub-category selection.
+* 3. If the category is not "Other":
+*    - Navigates to the sub-categories page for the selected category.
+* 
+* This ensures that "Other" categories bypass the sub-category selection
+* and the prompt can be created immediately with the correct identifiers.
+* 
+* @param categoryId - The ID of the category selected by the user
+*/
   async openCategory(categoryId: string) {
     const category = this.categories().find(cat => cat._id === categoryId);
-    if (!category) return; 
+    if (!category) return;
 
     const categoryName = category.name;
 
     if (categoryName === 'Other') {
-        const otherSubCategories = await this.api.getSubCategories(categoryId);
-        if (!otherSubCategories || otherSubCategories.length === 0) {
-          console.error('No subcategory found for Other category');
-          return;
-        }
+      const otherSubCategories = await this.api.getSubCategories(categoryId);
+      if (!otherSubCategories || otherSubCategories.length === 0) {
+        console.error('No subcategory found for Other category');
+        return;
+      }
 
       const sub = { _id: otherSubCategories[0]._id, name: 'Other' };
 
@@ -80,12 +80,12 @@ export class CategoriesComponent implements OnInit {
     this.router.navigate(['/categories', categoryId, 'sub']);
   }
 
-     /**
-   * Navigate back to the previous page.
-   */
-    goBack() {
-      this.navigation.goBack();
-    }
+  /**
+* Navigate back to the previous page.
+*/
+  goBack() {
+    this.navigation.goBack();
+  }
 
 
 }

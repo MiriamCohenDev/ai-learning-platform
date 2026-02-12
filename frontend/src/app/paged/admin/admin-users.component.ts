@@ -19,8 +19,8 @@ import { NavigationService } from '../../core/services/navigation.service';
  */
 @Component({
   selector: 'app-admin-users',
-  standalone: true,         
-  imports: [CommonModule],   
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './admin-users.component.html',
   styleUrls: ['./admin-users.component.scss'],
 })
@@ -39,24 +39,24 @@ export class AdminUsersComponent implements OnInit {
     this.cdr.detectChanges();
   }
 
-    /**
-   * Navigate to the history component for a specific user.
-   * 
-   * @param userId - The ID of the selected user.
-   * 
-   * Implementation detail:
-   * - Sends the `userId` as a query parameter to the history component.
-   * - The history component interprets this parameter to load the correct user's lessons.
-   */
+  /**
+ * Navigate to the history component for a specific user.
+ * 
+ * @param userId - The ID of the selected user.
+ * 
+ * Implementation detail:
+ * - Sends the `userId` as a query parameter to the history component.
+ * - The history component interprets this parameter to load the correct user's lessons.
+ */
   openHistory(userId: string) {
     this.router.navigate(['/history'], { queryParams: { userId } });
   }
 
-    /**
-   * Navigate back to the previous page.
-   */
-    goBack() {
-      this.navigation.goBack();
-    }
+  /**
+ * Navigate back to the previous page.
+ */
+  goBack() {
+    this.navigation.goBack();
+  }
 
 }

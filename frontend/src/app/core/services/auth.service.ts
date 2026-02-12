@@ -16,11 +16,11 @@ import { TokenService } from './token.service';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-   private tokenService = inject(TokenService);
-   /**
-   * Returns the JWT access token from cookies.
-   * @returns JWT string if present, otherwise null
-   */
+  private tokenService = inject(TokenService);
+  /**
+  * Returns the JWT access token from cookies.
+  * @returns JWT string if present, otherwise null
+  */
   get token(): string | null {
     return this.tokenService.getToken();
   }
@@ -35,10 +35,10 @@ export class AuthService {
     return payload.role;
   }
 
-   /**
-   * Checks if the current user is an admin.
-   * @returns true if role is 'admin', false otherwise
-   */
+  /**
+  * Checks if the current user is an admin.
+  * @returns true if role is 'admin', false otherwise
+  */
   isAdmin(): boolean {
     return this.role === 'admin';
   }
